@@ -1,45 +1,21 @@
 const _ = require('lodash');
 
-module.exports = (_schema, useJoiError = true) => {
-  const _useJoiError = _.isBoolean(useJoiError) && useJoiError;
+module.exports = (_schema) => {
+  const config = { abortEarly: false };
 
-  // Joi validation options
-  const _validationOptions = {
-    abortEarly: false, // abort after the last validation error
-    allowUnknown: true, // allow unknown keys that will be ignored
-    stripUnknown: true // remove unknown keys from the validated data
-  };
-  console.log(`_schema`, _schema)
-
-  // return the validation middleware
   return (req, res, next) => {
-    _schema
-      .validate(req, _validationOptions)
-      .then(validatedChanges => {
-        req.body = validatedChanges.body;
-        next();
-        return null;
-      })
-      .catch(validationError => {
-        // Joi Error
-        const JoiError = {
-          status: 'failed',
-          error: {
-            details: validationError.details.map(d => {
-              return new Error({
-                message: d.message.replace(/['"]/g, ''),
-                path: d.path
-              });
-            })
-          }
-        };
-        // Custom Error
-        const CustomError = new Error({
-          status: 'failed',
-          error: 'Invalid request data. Please review request and try again.'
-        });
-
-        res.status(400).send(_useJoiError ? JoiError : CustomError);
+    const { error } = _schema.validate(req.body, config);
+    if (error && error.details) {
+      const errorMessages = {};
+      error.details.map(
+        (err) => (errorMessages[err.context.label] = err.message.replace(/['"]/g, ''))
+      );
+      return res.status(400).json({
+        status: "failed",
+        details: errorMessages,
+        message: "Invalid request data. Please review request and try again.",
       });
-  };
+    }
+    next();
+  }
 };
