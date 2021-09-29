@@ -2,15 +2,15 @@ const User = require("./user.model");
 const validationSchema = require("./user.validation");
 
 const create = (req, res, next) => {
-  const { error, value } = validationSchema.register.validate(
-    { name: "123", password: "", email: "" },
+  const { error } = validationSchema.register.validate(
+    req.body,
     { abortEarly: false }
   );
   console.log("error: ", JSON.stringify(error, null, 2));
-  if (error) {
+  if (error && error.details) {
     const errorMessages = {};
     error.details.map(
-      (err) => (errorMessages[err.context.label] = err.message)
+      (err) => (errorMessages[err.context.label] = err.message.replace(/['"]/g, ''))
     );
     return res
       .status(400)
