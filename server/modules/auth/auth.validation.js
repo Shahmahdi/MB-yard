@@ -1,10 +1,7 @@
 const Joi = require("joi");
 
 module.exports = {
-  register: Joi.object({
-    name: Joi.string().required().messages({
-      "any.only": "qwerqwer"
-    }),
+  login: Joi.object({
     email: Joi.string()
       .regex(
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -21,18 +18,6 @@ module.exports = {
       .required()
       .messages({
         "string.pattern.base": `Password should contain Uppercase, Lowercase, Special character, Number and minimum 8 characters long.`
-      }),
-    confirmPassword: Joi.string()
-      .valid(Joi.ref("password"))
-      .required()
-      .messages({
-        "any.only": `Password and confirm password didn't match`
-      }),
-    phone: Joi.string()
-      .regex(/^(\+?(88)?0?1[356789][0-9]{8})$/)
-      .required()
-      .messages({
-        "string.pattern.base": `Phone number didn't match the validation`
       })
   })
 };

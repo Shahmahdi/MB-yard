@@ -6,18 +6,19 @@ const cors = require("cors");
 require("dotenv").config();
 const allRoutes = require("./index.route");
 const mongoose = require("mongoose");
+const { dbConnectionUrl } = require("./modules/variables/index");
 
 const app = express();
 
 mongoose
-  .connect(process.env.Database, {
+  .connect(dbConnectionUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
   .then(() => {
     console.log("Database connected..");
   }).catch(() => {
-    logger.error(`unable to connect to database: ${process.env.Database}`);
+    logger.error(`unable to connect to database: ${dbConnectionUrl}`);
   });
 
 app.use(logger("dev"));

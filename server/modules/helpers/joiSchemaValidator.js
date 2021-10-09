@@ -11,9 +11,9 @@ module.exports = (_schema) => {
         (err) => (errorMessages[err.context.label] = err.message.replace(/['"]/g, ''))
       );
       return res.status(400).json({
-        status: "failed",
+        status: 400,
         details: errorMessages,
-        message: "Invalid request data. Please review request and try again.",
+        message: "Invalid request data. Please check your information and try again.",
       });
     }
     next();
