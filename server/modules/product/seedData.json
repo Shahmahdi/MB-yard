@@ -1,0 +1,74 @@
+[
+  {
+    "name": "NAVIFORCE Watch for Men - Silver",
+    "price": 1000,
+    "imageUrl": "../../images/menWatch/naviforce.png",
+    "categoryName": "Men's Watch"
+  },
+  {
+    "name": "Hero Hunk 150cc Motor Bike",
+    "price": 130000,
+    "imageUrl": "../../images/bike/heroHunk.png",
+    "categoryName": "Motor bike"
+  },
+  {
+    "name": "Honda CBR150R Motor Bike - 150 cc",
+    "price": 160000,
+    "imageUrl": "../../images/bike/hondaCbr150.jpeg",
+    "categoryName": "Motor bike"
+  },
+  {
+    "name": "Fastrack special Mens Watch",
+    "price": 1500,
+    "imageUrl": "../../images/menWatch/fasttrack",
+    "categoryName": "Men's Watch"
+  },
+  {
+    "name": "Xiaomi Poco X3 Pro Smartphone",
+    "price": 30000,
+    "imageUrl": "../../images/samrtPhone/pocox3.png",
+    "categoryName": "Smart Phone"
+  },
+  {
+    "name": "Apple iPhone 12 Pro Max Smartphone",
+    "price": 130000,
+    "imageUrl": "../../images/samrtPhone/iphone12.jpg",
+    "categoryName": "Smart Phone"
+  },
+  {
+    "name": "Lenovo ThinkPad X13 Laptop - 13.3-Inch",
+    "price": 160000,
+    "imageUrl": "../../images/laptop/thinkpad.png",
+    "categoryName": "Laptop"
+  },
+  {
+    "name": "Apple MacBook Pro MYD82 Laptop 13.3-Inch",
+    "price": 145000,
+    "imageUrl": "../../images/laptop/macbookPro.png",
+    "categoryName": "Laptop"
+  },
+  {
+    "name": "Jamuna JR-UES627800 Cristal Glass Door Refrigerator",
+    "price": 29000,
+    "imageUrl": "../../images/refrigerator/jamuna.png",
+    "categoryName": "Refrigerator"
+  },
+  {
+    "name": "Electra ER-350HV20/SI Non-Frost Refrigerator",
+    "price": 52000,
+    "imageUrl": "../../images/refrigerator/electra.png",
+    "categoryName": "Refrigerator"
+  },
+  {
+    "name": "Toshiba THB-LED-43V35P 43\" FHD LED Smart TV",
+    "price": 48000,
+    "imageUrl": "../../images/smartTV/toshiba.png",
+    "categoryName": "Smart TV"
+  },
+  {
+    "name": "Sony Bravia KD-65X7500H 65\" 4K Ultra HD Smart Android TV",
+    "price": 100000,
+    "imageUrl": "../../images/smartTV/bravia.png",
+    "categoryName": "Smart TV"
+  }
+]

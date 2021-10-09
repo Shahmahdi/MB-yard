@@ -3,10 +3,10 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
-require("dotenv").config();
 const allRoutes = require("./index.route");
 const mongoose = require("mongoose");
-const { dbConnectionUrl } = require("./modules/variables/index");
+const { dbConnectionUrl, loadSeedData } = require("./modules/variables/index");
+const { saveSeedDataToDB } = require("./loadSeedData");
 
 const app = express();
 
@@ -17,8 +17,11 @@ mongoose
   })
   .then(() => {
     console.log("Database connected..");
-  }).catch(() => {
-    logger.error(`unable to connect to database: ${dbConnectionUrl}`);
+    if (loadSeedData) {
+      saveSeedDataToDB();
+    }
+  }).catch((error) => {
+    logger.error(`unable to connect to database: ${dbConnectionUrl}`, error);
   });
 
 app.use(logger("dev"));
