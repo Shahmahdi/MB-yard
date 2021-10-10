@@ -1,72 +1,84 @@
 [
   {
     "name": "NAVIFORCE Watch for Men - Silver",
+    "description": "Black PU Leather Analog Watch for Men - Black",
     "price": 1000,
     "imageUrl": "../../images/menWatch/naviforce.png",
     "categoryName": "Men's Watch"
   },
   {
     "name": "Hero Hunk 150cc Motor Bike",
+    "description": "Hero has used 149.2cc engine in this Hunk 150 bike, which is Air cooled, 4 Stroke 2 Valve Single cylinder OHC. The bike is capable of generating a maximum power of 15.6 Bhp @ 8500 rpm and a maximum torque of 13.50 Nm @ 7000 rpm. The bike is capable of running at a maximum speed of about 107 Kmph. The Hunk 150 bike has an average mileage of about 45 Kmpl.",
     "price": 130000,
     "imageUrl": "../../images/bike/heroHunk.png",
     "categoryName": "Motor bike"
   },
   {
     "name": "Honda CBR150R Motor Bike - 150 cc",
+    "description": "The CBR150R is one of the stylish latest super bikes of Honda. Including its outstanding features like - sporty look and wonderful color combination along with liquid-cooled powerful engine which included a program fuel injection. In comparison, its price is higher in Bangladesh, but its demand for fashion-based Bangladeshis is above all. The CBR sports bikes are a big part of the motor sports world. Yamaha R15 v3, Suzuki GSX R150 are the strong competitors of this super dashing bike.",
     "price": 160000,
     "imageUrl": "../../images/bike/hondaCbr150.jpeg",
     "categoryName": "Motor bike"
   },
   {
     "name": "Fastrack special Mens Watch",
+    "description": "This analog watch for men has a grey, round-shaped dial, with plain three hands, a stainless steel case with a crown, Arabic numerals in black and baton hour markings in green for third, sixth, ninth and twelfth-hour positions. Made of plastic, its black strap is secured by a buckle closure. It has 5atm water-resistant depth.",
     "price": 1500,
     "imageUrl": "../../images/menWatch/fasttrack",
     "categoryName": "Men's Watch"
   },
   {
     "name": "Xiaomi Poco X3 Pro Smartphone",
+    "description": "Released 2021, March 24 - 215g, 9.4mm thickness - Android 11, MIUI 12.5 for POCO - 128GB/256GB storage, microSDXC",
     "price": 30000,
     "imageUrl": "../../images/samrtPhone/pocox3.png",
     "categoryName": "Smart Phone"
   },
   {
     "name": "Apple iPhone 12 Pro Max Smartphone",
+    "description": "Released 2020, November 13 - 228g, 7.4mm thickness - iOS 14.1, up to iOS 15 - 128GB/256GB/512GB storage, no card slot",
     "price": 130000,
     "imageUrl": "../../images/samrtPhone/iphone12.jpg",
     "categoryName": "Smart Phone"
   },
   {
     "name": "Lenovo ThinkPad X13 Laptop - 13.3-Inch",
+    "description": "Ultimate 13.3 business travel laptop. Thin and Light. Designed on Intel vPro® platform. Ample storage and memory options. Great security features All day battery performance",
     "price": 160000,
     "imageUrl": "../../images/laptop/thinkpad.png",
     "categoryName": "Laptop"
   },
   {
     "name": "Apple MacBook Pro MYD82 Laptop 13.3-Inch",
+    "description": "Apple MacBook Pro 13.3-Inch Retina Display 8-core Apple M1 chip with 8GB RAM, 256GB SSD (MYD82) Space Gray",
     "price": 145000,
     "imageUrl": "../../images/laptop/macbookPro.png",
     "categoryName": "Laptop"
   },
   {
     "name": "Jamuna JR-UES627800 Cristal Glass Door Refrigerator",
+    "description": "JAMUNA JR-UES627800 Crystal Glass Door Refrigerator -278L- BLUE LILY LEAF",
     "price": 29000,
     "imageUrl": "../../images/refrigerator/jamuna.png",
     "categoryName": "Refrigerator"
   },
   {
     "name": "Electra ER-350HV20/SI Non-Frost Refrigerator",
+    "description": "Capacity: 356 Liter. Color: Inox Silver. Type: No Frost. Dispenser Type: Water Dispenser",
     "price": 52000,
     "imageUrl": "../../images/refrigerator/electra.png",
     "categoryName": "Refrigerator"
   },
   {
     "name": "Toshiba THB-LED-43V35P 43\" FHD LED Smart TV",
+    "description": "A smart TV, also known as a connected TV (CTV), is a traditional television set with integrated Internet and interactive Web 2.0 features, which allows users to stream music and videos, browse the internet, and view photos. Smart TVs are a technological convergence of computers, televisions, and digital media players. Toshiba is a consumer electronics giant that produces everything from televisions to batteries. The company has its headquarters in Tokyo, Japan and is popular for producing high quality electronic products that are durable and innovative. Toshiba televisions are especially popular in Bangladesh",
     "price": 48000,
     "imageUrl": "../../images/smartTV/toshiba.png",
     "categoryName": "Smart TV"
   },
   {
     "name": "Sony Bravia KD-65X7500H 65\" 4K Ultra HD Smart Android TV",
+    "description": "Model: KD-65x7500H 65 inch 4K UHD(3840 x 2160) LCD Display. Youtube, Netflix, USB, Wi-Fi, Bluetooth supports. Size: 1101 x 645 x 57mm(without stand)",
     "price": 100000,
     "imageUrl": "../../images/smartTV/bravia.png",
     "categoryName": "Smart TV"

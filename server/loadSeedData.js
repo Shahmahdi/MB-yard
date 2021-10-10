@@ -17,6 +17,7 @@ const saveProductData = async () => {
     const category = await Category.find({ name: product.categoryName });
     const newProductObj = new Product({
       name: product.name,
+      description: product.description,
       price: product.price,
       imageUrl: product.imageUrl,
       category: category[0]._id
