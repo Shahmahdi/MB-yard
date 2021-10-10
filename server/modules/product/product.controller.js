@@ -17,18 +17,39 @@ const list = async (req, res, next) => {
         });
       });
   } catch (error) {
-    console.log(error);
+    if (error.status) {
+      res.status(error.status).json(error);
+    } else {
+      res.status(500).json({
+        status: 500,
+        message: "Something went wrong. Please try again later."
+      });
+    }
   }
 };
 
 const search = (req, res, next) => {
-  const searchingValue = req.query.name;
-  Product.find({ name: new RegExp(searchingValue, "i")}, function (err, searchedValue) {
-    if (err) {
-      console.log('Product search error: ',err);
+  try {
+    const searchingValue = req.query.name;
+    Product.find(
+      { name: new RegExp(searchingValue, "i") },
+      function (err, searchedValue) {
+        if (err) {
+          console.log("Product search error: ", err);
+        }
+        res.status(200).json(searchedValue);
+      }
+    );
+  } catch (error) {
+    if (error.status) {
+      res.status(error.status).json(error);
+    } else {
+      res.status(500).json({
+        status: 500,
+        message: "Something went wrong. Please try again later."
+      });
     }
-    res.status(200).json(searchedValue);
-  });
-}
+  }
+};
 
 module.exports = { list, search };
