@@ -21,8 +21,6 @@ mongoose
     if (loadSeedData) {
       saveSeedDataToDB();
     }
-  }).catch((error) => {
-    logger.error(`unable to connect to database: ${dbConnectionUrl}`, error);
   });
 
 app.use(logger("dev"));

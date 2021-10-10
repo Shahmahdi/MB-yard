@@ -2,6 +2,7 @@ const User = require("../user/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { jwtSecret } = require("../variables/index");
+const { errorHandler } = require("../helpers/errorHandler");
 
 const login = async (req, res, next) => {
   try {
@@ -28,14 +29,7 @@ const login = async (req, res, next) => {
       data: { token }
     });
   } catch (error) {
-    if (error.status) {
-      res.status(error.status).json(error);
-    } else {
-      res.status(500).json({
-        status: 500,
-        message: "Something went wrong. Please try again later."
-      });
-    }
+    errorHandler(res, error);
   }
 };
 
