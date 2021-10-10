@@ -8,8 +8,7 @@ module.exports = {
       )
       .required()
       .messages({
-        "string.pattern.base": `Email is not valid format`,
-        "string.lowercase": "asdf"
+        "string.pattern.base": `Email is not valid format`
       }),
     password: Joi.string()
       .regex(

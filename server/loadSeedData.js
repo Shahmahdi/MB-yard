@@ -28,10 +28,22 @@ const saveProductData = async () => {
 const saveSeedDataToDB = () => {
   try {
     console.log("========= Start seed data manupulate ===========");
-    Product.deleteMany({}, async () => {
-      await Category.deleteMany({});
-      await saveCategoryData();
-      await saveProductData();
+    Category.find(async (err, data) => {
+      if (err) {
+        console.log(error);
+        throw {
+          status: 500,
+          message: "Error occured while save seed data to DDB"
+        }
+        return;
+      }
+      if (data.length === 0) {
+        console.log("Seed data manupulating...")
+        await Product.deleteMany({});
+        await Category.deleteMany({});
+        await saveCategoryData();
+        await saveProductData();
+      }
       console.log("========= Finnish seed data manupulate ===========");
     });
   } catch (error) {
