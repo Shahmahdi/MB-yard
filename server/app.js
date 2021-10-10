@@ -7,6 +7,7 @@ const allRoutes = require("./index.route");
 const mongoose = require("mongoose");
 const { dbConnectionUrl, loadSeedData } = require("./modules/variables/index");
 const { saveSeedDataToDB } = require("./loadSeedData");
+const isAuth = require('./middlewares/authenticator');
 
 const app = express();
 
@@ -30,6 +31,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use(isAuth);
 
 app.use("/api/v1", allRoutes);
 
