@@ -1,11 +1,15 @@
 import React from 'react';
+import { Grid } from '@mui/material';
 import './App.css';
+import { Navbar } from './components/Navbar';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      hello world
-    </div>
+    <Grid container>
+      <Grid item xs={12}>
+        <Navbar />
+      </Grid>
+    </Grid>
   );
 }
 
