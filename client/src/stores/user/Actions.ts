@@ -1,5 +1,5 @@
 import { publicPost } from "../../utilities/apiCaller";
-import { USER_REGISTER } from "./Types";
+import { USER_LOGIN, USER_REGISTER } from "./Types";
 
 export const signup = async (reqData: any) => {
   return publicPost(`users`, reqData)
@@ -24,4 +24,8 @@ export const signup = async (reqData: any) => {
 
 export const setUserInfo =(data: any) => (dispatch: any) => {
   dispatch({ type: USER_REGISTER, payload: data });
+}
+
+export const setUserLoginInfo =(data: any) => (dispatch: any) => {
+  dispatch({ type: USER_LOGIN, payload: data });
 }

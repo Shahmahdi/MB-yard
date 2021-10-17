@@ -5,9 +5,11 @@ import { validate } from "../../utilities/validation";
 import { makeStyles } from "@mui/styles";
 import { ActionResponse } from "../../stores/InterfaceTypes";
 import { ButtonField } from "../../components/common/ButtonField";
-import { setUserInfo, signup } from "../../stores/user/Actions";
+import { setUserInfo, signup, setUserLoginInfo } from "../../stores/user/Actions";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
+import { login } from "../../stores/auth/Actions";
+import { SnacbarField } from "../../components/common/SnacbarField";
 
 const errObjInitialState = {
   isValid: null,
@@ -37,6 +39,7 @@ const useStyles = makeStyles(() => ({
 const SignupPageComponent = (props: any) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
+  const [showSnacbar, setShowSnacbar] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -91,9 +94,22 @@ const SignupPageComponent = (props: any) => {
     if (res.status === "fail") {
       setResponse(res);
     } else {
-      props.history.push("/landing");
-      // save data into reducer
       props.setUserInfo!(res.userInfo);
+      const loginReqData = {
+        email: formData.email,
+        password: formData.password
+      }
+      const loginResponse: any = await login(loginReqData);
+      console.log(`loginResponse: `, loginResponse)
+      if (loginResponse.status === "fail") {
+        setShowSnacbar(true);
+      } else {
+        props.setUserLoginInfo({
+          ...res.userInfo,
+          ...loginResponse.userInfo
+        })
+        props.history.push("/landing");
+      }
     }
     setLoading(false);
   };
@@ -190,14 +206,13 @@ const SignupPageComponent = (props: any) => {
           disabled={!hasNoError() || loading}
         />
       </Grid>
+      <SnacbarField
+        message="Registration completed successfully but login failed. Please try to login again."
+        open={showSnacbar}
+        onClose={() => setShowSnacbar(false)}
+      />
     </Grid>
   );
 };
 
-// const mapStateToProps = (state: any) => {
-//   return {
-//     user: state.userReducer.user
-//   }
-// }
-
-export const SignupPage = connect(null, { setUserInfo })(withRouter(SignupPageComponent));
+export const SignupPage = connect(null, { setUserInfo, setUserLoginInfo })(withRouter(SignupPageComponent));

@@ -7,7 +7,11 @@ import {
   InputBase,
   Toolbar,
   Typography,
-  Popover
+  Popover,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  List
 } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import { makeStyles } from "@mui/styles";
@@ -16,6 +20,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { LoginForm } from "./LoginForm";
 import { ShoppingCart } from "./ShoppingCart";
+import { connect } from "react-redux";
+import { isEmpty } from "lodash";
+import { logout } from "../stores/auth/Actions";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -61,7 +68,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export const Navbar = () => {
+const NavbarComponent = (props: any) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const [anchorElOfShoppingCart, setAnchorElOfShoppingCart] = React.useState<HTMLButtonElement | null>(null);
@@ -97,13 +104,13 @@ export const Navbar = () => {
               </Badge>
             </IconButton>
             <IconButton
-              size='large'
+              size='small'
               edge='end'
               aria-label='account of current user'
               aria-haspopup='true'
               color='inherit'
               onClick={e => setAnchorEl(e.currentTarget)}>
-              <AccountCircle />
+              <AccountCircle />{props.userInfo.token ? ` ${props.userInfo.user.name}` : ""}
             </IconButton>
           </Box>
         </Toolbar>
@@ -117,7 +124,14 @@ export const Navbar = () => {
           vertical: "bottom",
           horizontal: "left"
         }}>
-        <LoginForm />
+        {isEmpty(props.userInfo.token) ?
+          <LoginForm onClose={() => setAnchorEl(null)} />
+          : <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => props.logout()}>
+                <ListItemText primary="Logout" />
+              </ListItemButton>
+            </ListItem></List>}
       </Popover>
       <Popover
         id="login_form_popover"
@@ -133,3 +147,11 @@ export const Navbar = () => {
     </>
   );
 };
+
+const mapStateToProps = (state: any) => {
+  return {
+    userInfo: state.userReducer
+  }
+}
+
+export const Navbar = connect(mapStateToProps, { logout })(NavbarComponent);

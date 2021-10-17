@@ -1,4 +1,5 @@
 import { publicPost } from "../../utilities/apiCaller";
+import { CLEAR_ALL } from "../user/Types";
 
 interface LoginProps {
   email: string;
@@ -6,11 +7,12 @@ interface LoginProps {
 }
 
 export const login = async (reqData: LoginProps) => {
-  return publicPost(`users`, reqData)
+  return publicPost(`/auth/login`, reqData)
     .then((response: any) => {
       console.log(response);
       return {
         status: response.data.status,
+        userInfo: response.data.data,
         message: response.data.message
       };
     })
@@ -26,3 +28,7 @@ export const login = async (reqData: LoginProps) => {
       };
     });
 };
+
+export const logout =() => (dispatch: any) => {
+  dispatch({ type: CLEAR_ALL });
+}

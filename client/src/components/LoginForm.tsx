@@ -7,6 +7,8 @@ import { ButtonField } from "./common/ButtonField";
 import { validate } from "../utilities/validation";
 import { login } from "../stores/auth/Actions";
 import { ActionResponse } from "../stores/InterfaceTypes";
+import { connect } from "react-redux";
+import { setUserLoginInfo } from "../stores/user/Actions";
 
 const useStyles = makeStyles(() => ({
   loginFormWrapper: {
@@ -34,7 +36,15 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export const LoginForm = () => {
+interface LoginFormProps {
+  onClose: () => void
+}
+
+interface LoginFormInternalProps extends LoginFormProps {
+  setUserLoginInfo?: (data: any) => void
+}
+
+const LoginFormComponent = (props: LoginFormInternalProps) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -79,6 +89,11 @@ export const LoginForm = () => {
     console.log(`onSubmit res: `, res)
     if (res.status === "fail") {
       setResponse(res);
+    } else {
+      props.setUserLoginInfo!({
+        ...res.userInfo
+      });
+      props.onClose();
     }
     setLoading(false);
   };
@@ -129,10 +144,12 @@ export const LoginForm = () => {
       </Grid>
       <Grid item xs={12} className={classes.signupText}>
         Don't have an account?{" "}
-        <Link className={classes.signupLink} to='/signup'>
+        <Link className={classes.signupLink} to='/signup' onClick={() => props.onClose()}>
           Sign up
         </Link>
       </Grid>
     </Grid>
   );
 };
+
+export const LoginForm = connect(null, {setUserLoginInfo})(LoginFormComponent);
