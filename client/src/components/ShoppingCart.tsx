@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Grid,
   List,
@@ -11,34 +11,10 @@ import {
   ListItemButton
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import a from "../styles/heroHunk.png";
 import { makeStyles } from "@mui/styles";
-
-const demoData = [
-  {
-    name: "NAVIFORCE Watch for Men - Silver",
-    description: "Black PU Leather Analog Watch for Men - Black",
-    price: 1000,
-    imageUrl: "../../images/menWatch/naviforce.png",
-    categoryName: "Men's Watch"
-  },
-  {
-    name: "Hero Hunk 150cc Motor Bike",
-    description:
-      "Hero has used 149.2cc engine in this Hunk 150 bike, which is Air cooled, 4 Stroke 2 Valve Single cylinder OHC. The bike is capable of generating a maximum power of 15.6 Bhp @ 8500 rpm and a maximum torque of 13.50 Nm @ 7000 rpm. The bike is capable of running at a maximum speed of about 107 Kmph. The Hunk 150 bike has an average mileage of about 45 Kmpl.",
-    price: 130000,
-    imageUrl: "../../images/bike/heroHunk.png",
-    categoryName: "Motor bike"
-  },
-  {
-    name: "Honda CBR150R Motor Bike - 150 cc",
-    description:
-      "The CBR150R is one of the stylish latest super bikes of Honda. Including its outstanding features like - sporty look and wonderful color combination along with liquid-cooled powerful engine which included a program fuel injection. In comparison, its price is higher in Bangladesh, but its demand for fashion-based Bangladeshis is above all. The CBR sports bikes are a big part of the motor sports world. Yamaha R15 v3, Suzuki GSX R150 are the strong competitors of this super dashing bike.",
-    price: 160000,
-    imageUrl: "../../images/bike/hondaCbr150.jpeg",
-    categoryName: "Motor bike"
-  }
-];
+import { connect } from "react-redux";
+import { getWishlist, removeItemIntoWishlist, updateUserWishlist } from "../stores/user/Actions";
+import { SnacbarField } from "./common/SnacbarField";
 
 const useStyles = makeStyles(() => ({
   listItem: {
@@ -49,40 +25,53 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export const ShoppingCart = () => {
+interface ShoppingCartInternalProps {
+  userInfo?: any;
+  updateUserWishlist: (val: any) => void
+}
+
+const ShoppingCartComponent = (props: ShoppingCartInternalProps) => {
   const classes = useStyles();
+  const [showSnacbar, setShowSnacbar] = useState(false);
+  const [response, setResponse] = useState({} as any);
+
+  const removeItemFromList = async (productId: string) => {
+    const res: any = await removeItemIntoWishlist(props.userInfo.token, productId);
+    setResponse(res);
+    setShowSnacbar(true);
+    if (res.status === "success") {
+      const updatedWishlist: any = await getWishlist(props.userInfo.token);
+      const formateData = {
+        list: updatedWishlist.wishlist,
+        totalAmount: updatedWishlist.totalAmount
+      }
+      props.updateUserWishlist(formateData);
+    }
+  }
+
   return (
     <Grid container>
       <Grid item xs={12}>
         <List
           dense
           sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-          {demoData.map((value, i) => {
-            // const labelId = `checkbox-list-secondary-label-${value}`;
+          {props.userInfo.wishlist && props.userInfo.wishlist.map((product: any, i: number) => {
             return (
               <ListItem
                 key={i}
-                className={`${classes.listItem} ${
-                  demoData.length !== i + 1 ? `${classes.borderBottom}` : ""
-                }`}
+                className={`${classes.listItem} ${props.userInfo.wishlist.length !== i + 1 ? `${classes.borderBottom}` : ""
+                  }`}
                 alignItems='flex-start'
                 secondaryAction={
-                  // <Checkbox
-                  //   edge="end"
-                  //   onChange={handleToggle(value)}
-                  //   checked={checked.indexOf(value) !== -1}
-                  //   inputProps={{ 'aria-labelledby': labelId }}
-                  // />
-                  <IconButton aria-label='delete'>
+                  <IconButton onClick={() => removeItemFromList(product._id)} aria-label='delete'>
                     <DeleteIcon />
                   </IconButton>
                 }>
-                {/* <ListItem alignItems='flex-start'> */}
                 <ListItemAvatar>
-                  <Avatar alt='Remy Sharp' src={a} />
+                  <Avatar alt='Remy Sharp' src={product.imageUrl} />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={value.name}
+                  primary={product.name}
                   secondary={
                     <React.Fragment>
                       <Typography
@@ -90,23 +79,44 @@ export const ShoppingCart = () => {
                         component='span'
                         variant='body2'
                         color='text.primary'>
-                        {value.price}
+                        {product.price}
                       </Typography>
                     </React.Fragment>
                   }
                 />
-                {/* </ListItem> */}
-                {/* <Divider variant='inset' component='li' /> */}
               </ListItem>
             );
           })}
-          <ListItem alignItems='flex-start' secondaryAction={100000}>
-            <ListItemButton>
-              <ListItemText id='last_row' primary={`Continue`} />
-            </ListItemButton>
-          </ListItem>
+          {props.userInfo.wishlist && props.userInfo.wishlist.length > 0 &&
+            <ListItem alignItems='flex-start' secondaryAction={props.userInfo.totalWishlistAmount}>
+              <ListItemButton>
+                <ListItemText id='last_row' primary={`Total`} />
+              </ListItemButton>
+            </ListItem>
+          }
+          {props.userInfo.wishlist && props.userInfo.wishlist.length === 0 &&
+            <ListItem alignItems='center'>
+              <ListItemButton>
+                <ListItemText id='last_row' primary={`No item selected yet.`} />
+              </ListItemButton>
+            </ListItem>
+          }
         </List>
+        <SnacbarField
+          message={response.message}
+          open={showSnacbar}
+          onClose={() => setShowSnacbar(false)}
+          type={response.status}
+        />
       </Grid>
     </Grid>
   );
 };
+
+const mapStateToProps = (state: any) => {
+  return {
+    userInfo: state.userReducer,
+  }
+}
+
+export const ShoppingCart = connect(mapStateToProps, {updateUserWishlist})(ShoppingCartComponent);

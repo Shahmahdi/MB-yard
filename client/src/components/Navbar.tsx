@@ -22,8 +22,9 @@ import { LoginForm } from "./LoginForm";
 import { ShoppingCart } from "./ShoppingCart";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
-import { logout } from "../stores/auth/Actions";
+import { logout, showLoginForm } from "../stores/auth/Actions";
 import { fetchingProductList, getProductListByName, fetchingFailedProductList, setProductList } from "../stores/product/Actions";
+import { Link } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -66,12 +67,16 @@ const useStyles = makeStyles(() => ({
   searchBarSection: {
     display: "flex",
     justifyContent: "center"
+  },
+  projectName: {
+    color: "white",
+    textDecoration: "none"
   }
 }));
 
 const NavbarComponent = (props: any) => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const [anchorElOfLoginForm, setAnchorElOfLoginForm] = React.useState<HTMLButtonElement | null>(null);
   const [anchorElOfShoppingCart, setAnchorElOfShoppingCart] = React.useState<HTMLButtonElement | null>(null);
   const [searchingValue, setSearchingValue] = useState("");
 
@@ -90,27 +95,29 @@ const NavbarComponent = (props: any) => {
 
   return (
     <>
-      <AppBar position='static' className={classes.navbarWrapper}>
+      <AppBar position='fixed' className={classes.navbarWrapper}>
         <Toolbar>
-          <Typography variant='h6' noWrap component='div'>
-            MB-yard
-          </Typography>
+          <Link className={classes.projectName} to="/landing">
+            <Typography variant='h6' noWrap component='div'>
+              MB-yard
+            </Typography>
+          </Link>
           <Box className={classes.searchBarSection} sx={{ flexGrow: 1 }}>
             <div>
               <form onSubmit={async (e: any) => {
                 e.preventDefault();
                 await onSubmitSearchForm();
               }}>
-              <Search>
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                  placeholder='Search for…'
-                  inputProps={{ "aria-label": "search" }}
-                  onChange={(e) => setSearchingValue(e.target.value)}
-                />
-              </Search>
+                <Search>
+                  <SearchIconWrapper>
+                    <SearchIcon />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    placeholder='Search for…'
+                    inputProps={{ "aria-label": "search" }}
+                    onChange={(e) => setSearchingValue(e.target.value)}
+                  />
+                </Search>
               </form>
             </div>
           </Box>
@@ -120,7 +127,7 @@ const NavbarComponent = (props: any) => {
               aria-label='show 4 new mails'
               color='inherit'
               onClick={e => setAnchorElOfShoppingCart(e.currentTarget)}>
-              <Badge badgeContent={4} color='error'>
+              <Badge badgeContent={props.userInfo.wishlist ? props.userInfo.wishlist.length : 0} color='error'>
                 <AddShoppingCartIcon />
               </Badge>
             </IconButton>
@@ -130,7 +137,10 @@ const NavbarComponent = (props: any) => {
               aria-label='account of current user'
               aria-haspopup='true'
               color='inherit'
-              onClick={e => setAnchorEl(e.currentTarget)}>
+              onClick={e => {
+                setAnchorElOfLoginForm(e.currentTarget);
+                props.showLoginForm(true);
+              }}>
               <AccountCircle />{props.userInfo.token ? ` ${props.userInfo.user.name}` : "Login"}
             </IconButton>
           </Box>
@@ -138,15 +148,18 @@ const NavbarComponent = (props: any) => {
       </AppBar>
       <Popover
         id="login_form_popover"
-        open={Boolean(anchorEl)}
-        anchorEl={anchorEl}
-        onClose={() => setAnchorEl(null)}
+        open={props.auth.showLoginForm}
+        anchorEl={anchorElOfLoginForm}
+        onClose={() => {
+          setAnchorElOfLoginForm(null);
+          props.showLoginForm(false);
+        }}
         anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left"
+          vertical: 50,
+          horizontal: "right"
         }}>
         {isEmpty(props.userInfo.token) ?
-          <LoginForm onClose={() => setAnchorEl(null)} />
+          <LoginForm onClose={() => setAnchorElOfLoginForm(null)} />
           : <List>
             <ListItem disablePadding>
               <ListItemButton onClick={() => props.logout()}>
@@ -171,9 +184,10 @@ const NavbarComponent = (props: any) => {
 
 const mapStateToProps = (state: any) => {
   return {
+    auth: state.authReducer,
     userInfo: state.userReducer,
     products: state.productReducer
   }
 }
 
-export const Navbar = connect(mapStateToProps, { logout, setProductList, fetchingProductList, fetchingFailedProductList })(NavbarComponent);
+export const Navbar = connect(mapStateToProps, { logout, showLoginForm, setProductList, fetchingProductList, fetchingFailedProductList })(NavbarComponent);

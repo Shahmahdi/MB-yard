@@ -17,7 +17,6 @@ mongoose
     useUnifiedTopology: true
   })
   .then(() => {
-    console.log("Database connected..");
     if (loadSeedData) {
       saveSeedDataToDB();
     }

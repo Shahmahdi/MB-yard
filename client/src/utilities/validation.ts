@@ -58,7 +58,6 @@ export const validate = (type: string, value: any) => {
         }
       }
     case "CONFIRMPASSWORD":
-      console.log(`confirm password value: `, value, )
       const response = {
         isValid: false,
         message:

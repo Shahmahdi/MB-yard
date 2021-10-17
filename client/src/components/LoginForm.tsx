@@ -8,7 +8,7 @@ import { validate } from "../utilities/validation";
 import { login } from "../stores/auth/Actions";
 import { ActionResponse } from "../stores/InterfaceTypes";
 import { connect } from "react-redux";
-import { setUserLoginInfo } from "../stores/user/Actions";
+import { getWishlist, setUserLoginInfo, updateUserWishlist } from "../stores/user/Actions";
 
 const useStyles = makeStyles(() => ({
   loginFormWrapper: {
@@ -41,7 +41,8 @@ interface LoginFormProps {
 }
 
 interface LoginFormInternalProps extends LoginFormProps {
-  setUserLoginInfo?: (data: any) => void
+  setUserLoginInfo?: (data: any) => void;
+  updateUserWishlist:(data: any) => void;
 }
 
 const LoginFormComponent = (props: LoginFormInternalProps) => {
@@ -84,9 +85,7 @@ const LoginFormComponent = (props: LoginFormInternalProps) => {
   const onSubmit = async () => {
     setResponse({ status: "", message: "" });
     setLoading(true);
-    console.log(`formData: `, formData);
     const res: any = await login(formData);
-    console.log(`onSubmit res: `, res)
     if (res.status === "fail") {
       setResponse(res);
     } else {
@@ -94,6 +93,12 @@ const LoginFormComponent = (props: LoginFormInternalProps) => {
         ...res.userInfo
       });
       props.onClose();
+      const wishlistRes: any = await getWishlist(res.userInfo.token);
+      const formateData = {
+        list: wishlistRes.wishlist,
+        totalAmount: wishlistRes.totalAmount
+      }
+      props.updateUserWishlist(formateData);
     }
     setLoading(false);
   };
@@ -152,4 +157,4 @@ const LoginFormComponent = (props: LoginFormInternalProps) => {
   );
 };
 
-export const LoginForm = connect(null, {setUserLoginInfo})(LoginFormComponent);
+export const LoginForm = connect(null, {setUserLoginInfo, updateUserWishlist})(LoginFormComponent);

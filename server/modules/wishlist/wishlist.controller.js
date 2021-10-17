@@ -16,10 +16,15 @@ const list = async (req, res, next) => {
       .sort({ createdAt: -1 })
       .exec()
       .then((wishlist) => {
-        const products = wishlist.map((w) => w.product);
+        let totalAmount = 0;
+        const products = wishlist.map((w) => {
+          totalAmount = totalAmount + w.product.price;
+          return w.product;
+        });
         res.status(200).json({
           status: 200,
           data: products,
+          totalAmount,
           message: "Wish list fetched successfully."
         });
       });

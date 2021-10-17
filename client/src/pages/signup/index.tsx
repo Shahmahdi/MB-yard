@@ -81,7 +81,6 @@ const SignupPageComponent = (props: any) => {
   const onSubmit = async () => {
     setResponse({ status: "", message: "" });
     setLoading(true);
-    console.log(`formData: `, formData);
     const reqData = {
       name: formData.name,
       email: formData.email,
@@ -90,7 +89,6 @@ const SignupPageComponent = (props: any) => {
       confirmPassword: formData.confirmPassword
     }
     const res: any = await signup(reqData);
-    console.log(`onSubmit res: `, res)
     if (res.status === "fail") {
       setResponse(res);
     } else {
@@ -100,7 +98,6 @@ const SignupPageComponent = (props: any) => {
         password: formData.password
       }
       const loginResponse: any = await login(loginReqData);
-      console.log(`loginResponse: `, loginResponse)
       if (loginResponse.status === "fail") {
         setShowSnacbar(true);
       } else {

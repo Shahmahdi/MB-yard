@@ -26,7 +26,6 @@ export const getProductList = async (limit: number, skip: number) => {
 export const getProductListByName = async (name: string) => {
   return publicGet(`product/search?name=${name}`)
     .then((response: any) => {
-      console.log(`response: `, response)
       return {
         status: response.data.status,
         products: response.data.data,

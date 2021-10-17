@@ -64,10 +64,7 @@ const LandingPageComponent = (props: LandingPageInternalProps) => {
       {props.products.list.map((product: any, i: number) => (
         <Grid key={i} item xs={12} sm={6} lg={4} className={classes.productDetailsWrapper}>
           <CardView
-            title={product.name}
-            description={product.description}
-            imageUrl={product.imageUrl}
-            price={product.price}
+            product={product}
           />
         </Grid>
       ))}

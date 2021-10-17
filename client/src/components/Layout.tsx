@@ -9,7 +9,8 @@ interface LayoutProps {
 
 const useStyles = makeStyles(() => ({
   componentWrapper: {
-    padding: "2rem"
+    padding: "2rem",
+    marginTop: "4rem !important"
   }
 }));
 

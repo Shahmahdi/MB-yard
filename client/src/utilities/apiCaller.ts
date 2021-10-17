@@ -57,7 +57,7 @@ export function privatePost(
     headers: { Authorization: `Bearer ${token}` }
   };
   return axios
-    .post(`${api}/${apiVersion}/${endpoint}`, JSON.stringify(body), config)
+    .post(`${api}/${apiVersion}/${endpoint}`, body, config)
     .then((response) => {
       return response;
     })

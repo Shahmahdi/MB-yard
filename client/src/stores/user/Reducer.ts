@@ -1,8 +1,10 @@
-import { USER_REGISTER, USER_LOGIN, CLEAR_ALL } from "./Types";
+import { USER_REGISTER, USER_LOGIN, CLEAR_ALL, UPDATE_WISH_LIST } from "./Types";
 
 const InitialState = {
   user: {},
-  token: ""
+  token: "",
+  wishlist: [],
+  totalWishlistAmount: 0
 };
 
 export const UserReducer = (state = InitialState, action: any) => {
@@ -21,6 +23,13 @@ export const UserReducer = (state = InitialState, action: any) => {
           name: action.payload.name,
           email: action.payload.email
         }
+      }
+    }
+    case UPDATE_WISH_LIST: {
+      return {
+        ...state,
+        wishlist: action.payload.list,
+        totalWishlistAmount: action.payload.totalAmount
       }
     }
     case CLEAR_ALL: {
