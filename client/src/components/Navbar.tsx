@@ -110,7 +110,7 @@ const NavbarComponent = (props: any) => {
               aria-haspopup='true'
               color='inherit'
               onClick={e => setAnchorEl(e.currentTarget)}>
-              <AccountCircle />{props.userInfo.token ? ` ${props.userInfo.user.name}` : ""}
+              <AccountCircle />{props.userInfo.token ? ` ${props.userInfo.user.name}` : "Login"}
             </IconButton>
           </Box>
         </Toolbar>

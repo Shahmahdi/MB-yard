@@ -7,27 +7,36 @@ import {
   CardActions,
   Button
 } from "@mui/material";
-
-import a from "../styles/heroHunk.png";
-
-// const image = require("../styles/heroHunk.png")
-
+import { makeStyles } from "@mui/styles";
 interface CardViewProps {
   title: string;
   description: string;
-  imageUrl: any;
+  imageUrl: string;
+  price: number;
 }
 
+const useStyles = makeStyles(() => ({
+  wrapper: {
+    display: "flex",
+    flexDirection: "column",
+    height: "100%"
+  },
+  priceText: {
+    marginTop: "1.5rem !important",
+    display: "flex",
+    justifyContent: "space-between"
+  }
+}));
+
 export const CardView = (props: CardViewProps) => {
+  const classes = useStyles();
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card className={classes.wrapper} sx={{ maxWidth: 345 }}>
       <CardMedia
         component='img'
-        height='100%'
-        width="100%"
-        // image={require(props.imageUrl)}
-        // image="http://localhost:4000/images/bike/heroHunk.png"
-        image={a}
+        height='auto'
+        width="auto"
+        image={props.imageUrl}
         alt={props.title}
       />
       <CardContent>
@@ -37,10 +46,12 @@ export const CardView = (props: CardViewProps) => {
         <Typography variant='body2' color='text.secondary'>
           {props.description}
         </Typography>
+        <Typography className={classes.priceText} align="justify" gutterBottom variant='h5' color='div'>
+          <span>Price</span><span> {props.price}</span>
+        </Typography>
       </CardContent>
       <CardActions>
-        <Button size='small'>Share</Button>
-        <Button size='small'>Learn More</Button>
+        <Button size='small'>Add to wishlist</Button>
       </CardActions>
     </Card>
   );

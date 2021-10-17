@@ -10,10 +10,12 @@ const list = async (req, res, next) => {
       .skip(+skip)
       .limit(+limit)
       .exec()
-      .then((result) => {
+      .then(async (result) => {
+        const totalProducts = await Product.count().exec();
         res.status(200).json({
           status: 200,
           data: result,
+          hasMore: totalProducts > (Number(limit) + Number(skip)),
           message: "Product list fetched successfully."
         });
       });
