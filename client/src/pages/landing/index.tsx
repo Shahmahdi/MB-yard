@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { CardView } from "../../components/Card";
 import { Alert, Button, CircularProgress, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { connect } from "react-redux";
-import { getProductList, setProductList } from "../../stores/product/Actions";
+import { fetchingProductList, getProductList, setProductList, fetchingFailedProductList } from "../../stores/product/Actions";
 import { Box } from "@mui/system";
-import { ActionResponse } from "../../stores/InterfaceTypes";
 
 const useStyles = makeStyles(() => ({
   wrapper: {
@@ -19,28 +18,27 @@ const useStyles = makeStyles(() => ({
 
 interface LandingPageInternalProps {
   products: any
-  setProductList: (data: any) => void
+  setProductList: (data: any) => void;
+  fetchingProductList: () => void;
+  fetchingFailedProductList: (message: string) => void;
 }
 
 const LandingPageComponent = (props: LandingPageInternalProps) => {
   const classes = useStyles();
-  const [loading, setLoading] = useState(true);
-  const [response, setResponse] = useState({} as ActionResponse);
 
   let limit = 10;
   let skip = 0;
   const fetchProductList = async () => {
-    setResponse({ status: "", message: "" });
+    props.fetchingProductList();
     const res: any = await getProductList(limit, skip);
     if (res.status === "fail") {
-      setResponse(res);
+      props.fetchingFailedProductList(res.message);
     } else {
       props.setProductList({
         list: res.products,
         hasMore: res.hasMore
       });
     }
-    setLoading(false);
   }
 
   const onClickNextButton = async () => {
@@ -50,18 +48,17 @@ const LandingPageComponent = (props: LandingPageInternalProps) => {
   }
 
   useEffect(() => {
-    console.log(`==================landing page called =============`);
     fetchProductList();
   }, []);
 
   return (
     <Grid container className={classes.wrapper}>
-      {response.status === "fail" && 
+      {props.products.fetchingFailed && 
         <Box display="flex" justifyContent="center" height="100%">
-          <Alert severity='error'>{response.message}</Alert>
+          <Alert severity='error'>{props.products.fetchingFailedMessage}</Alert>
         </Box>
       }
-      {loading ? <Box sx={{ display: 'flex', justifyContent: "center", alignItems: "center", height: "50vh", width: "100%" }}>
+      {props.products.fetchingList ? <Box sx={{ display: 'flex', justifyContent: "center", alignItems: "center", height: "50vh", width: "100%" }}>
         <CircularProgress />
       </Box> : <>
       {props.products.list.map((product: any, i: number) => (
@@ -78,6 +75,11 @@ const LandingPageComponent = (props: LandingPageInternalProps) => {
         <Button variant="contained" onClick={() => onClickNextButton()}>Next</Button>
         </Grid>}
       </>}
+      {props.products.list.length === 0 && !props.products.fetchingFailed &&
+        <Box display="flex" justifyContent="center" height="100%">
+          <Alert severity='info'>No item found.</Alert>
+        </Box>
+      }
     </Grid>
   );
 };
@@ -88,4 +90,4 @@ const mapStateToProps = (state: any) => {
   }
 }
 
-export const LandingPage = connect(mapStateToProps, { setProductList })(LandingPageComponent);
+export const LandingPage = connect(mapStateToProps, { setProductList, fetchingProductList, fetchingFailedProductList })(LandingPageComponent);

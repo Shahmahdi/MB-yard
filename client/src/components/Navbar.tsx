@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AccountCircle } from "@mui/icons-material";
 import {
   AppBar,
@@ -23,6 +23,7 @@ import { ShoppingCart } from "./ShoppingCart";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
 import { logout } from "../stores/auth/Actions";
+import { fetchingProductList, getProductListByName, fetchingFailedProductList, setProductList } from "../stores/product/Actions";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -72,6 +73,20 @@ const NavbarComponent = (props: any) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const [anchorElOfShoppingCart, setAnchorElOfShoppingCart] = React.useState<HTMLButtonElement | null>(null);
+  const [searchingValue, setSearchingValue] = useState("");
+
+  const onSubmitSearchForm = async () => {
+    props.fetchingProductList();
+    const res: any = await getProductListByName(searchingValue);
+    if (res.status === "fail") {
+      props.fetchingFailedProductList(res.message);
+    } else {
+      props.setProductList({
+        list: res.products,
+        hasMore: res.hasMore
+      });
+    }
+  }
 
   return (
     <>
@@ -82,6 +97,10 @@ const NavbarComponent = (props: any) => {
           </Typography>
           <Box className={classes.searchBarSection} sx={{ flexGrow: 1 }}>
             <div>
+              <form onSubmit={async (e: any) => {
+                e.preventDefault();
+                await onSubmitSearchForm();
+              }}>
               <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
@@ -89,8 +108,10 @@ const NavbarComponent = (props: any) => {
                 <StyledInputBase
                   placeholder='Search for…'
                   inputProps={{ "aria-label": "search" }}
+                  onChange={(e) => setSearchingValue(e.target.value)}
                 />
               </Search>
+              </form>
             </div>
           </Box>
           <Box>
@@ -150,8 +171,9 @@ const NavbarComponent = (props: any) => {
 
 const mapStateToProps = (state: any) => {
   return {
-    userInfo: state.userReducer
+    userInfo: state.userReducer,
+    products: state.productReducer
   }
 }
 
-export const Navbar = connect(mapStateToProps, { logout })(NavbarComponent);
+export const Navbar = connect(mapStateToProps, { logout, setProductList, fetchingProductList, fetchingFailedProductList })(NavbarComponent);
