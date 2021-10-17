@@ -38,11 +38,11 @@ export const LoginForm = () => {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    emailAddress: "",
+    email: "",
     password: ""
   });
   const [formDataErr, setFormDataErr] = useState({
-    emailAddress: {
+    email: {
       isValid: null,
       message: ""
     },
@@ -69,7 +69,7 @@ export const LoginForm = () => {
   };
 
   const hasNoError = () =>
-    formDataErr.emailAddress.isValid && formDataErr.password.isValid;
+    formDataErr.email.isValid && formDataErr.password.isValid;
 
   const onSubmit = async () => {
     setResponse({ status: "", message: "" });
@@ -92,13 +92,13 @@ export const LoginForm = () => {
         <Textfield
           label='Email Address'
           required={true}
-          value={formData.emailAddress}
+          value={formData.email}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            onChange("emailAddress", e.target.value)
+            onChange("email", e.target.value)
           }
-          onBlur={() => onBlur("emailAddress", formData.emailAddress)}
-          error={formDataErr.emailAddress.isValid === false}
-          helperText={formDataErr.emailAddress.message}
+          onBlur={() => onBlur("email", formData.email)}
+          error={formDataErr.email.isValid === false}
+          helperText={formDataErr.email.message}
           disabled={loading}
         />
       </Grid>
@@ -106,6 +106,7 @@ export const LoginForm = () => {
         <Textfield
           label='Password'
           required={true}
+          type="password"
           value={formData.password}
           onChange={(e: any) => onChange("password", e.target.value)}
           onBlur={(e: any) => onBlur("password", formData.password)}

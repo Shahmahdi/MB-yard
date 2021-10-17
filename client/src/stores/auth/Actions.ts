@@ -1,18 +1,18 @@
 import { publicPost } from "../../utilities/apiCaller";
 
 interface LoginProps {
-  emailAddress: string;
+  email: string;
   password: string;
 }
 
 export const login = async (reqData: LoginProps) => {
   return publicPost(`users`, reqData)
-    .then((response) => {
+    .then((response: any) => {
       console.log(response);
-      // return {
-      //   status: response.data.status,
-      //   message: response.data.message
-      // };
+      return {
+        status: response.data.status,
+        message: response.data.message
+      };
     })
     .catch((error) => {
       console.log(error);

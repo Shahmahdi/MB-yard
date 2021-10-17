@@ -7,7 +7,7 @@ export async function publicPost(
   apiVersion = defaultApiVersion
 ) {
   return axios
-    .post(`${api}/${apiVersion}/${endpoint}`, JSON.stringify(body))
+    .post(`${api}/${apiVersion}/${endpoint}`, body)
     .then((response) => {
       return response;
     })

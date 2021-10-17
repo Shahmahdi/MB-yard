@@ -1,6 +1,17 @@
-export const validate = (type: string, value: string) => {
+export const validate = (type: string, value: any) => {
   switch (type) {
-    case "EMAILADDRESS":
+    case "NAME":
+      if (!/([^\s])/.test(value)) {
+        return {
+          isValid: false,
+          message: "Name is required"
+        };
+      } else {
+        return {
+          isValid: true
+        };
+      }
+    case "EMAIL":
       if (!value) {
         return {
           isValid: false,
@@ -45,6 +56,43 @@ export const validate = (type: string, value: string) => {
             message: "Please enter valid password"
           };
         }
+      }
+    case "CONFIRMPASSWORD":
+      console.log(`confirm password value: `, value, )
+      const response = {
+        isValid: false,
+        message:
+          value.confirmPassword.length > 0
+            ? "Password does not match"
+            : "Please enter a confirm password"
+      };
+      if (value.password === value.confirmPassword) {
+        response.isValid = true;
+        response.message = "";
+      }
+      return response;
+    case "PHONE":
+      if (value !== undefined && value !== null && value.length !== 0) {
+        if (!/^[0-9]*$/.test(value)) {
+          return {
+            isValid: false,
+            message: "Only numeric number"
+          };
+        } else if(/^(\?0?1[356789][0-9]{8})$/.test(value)){
+          return{
+            isValid: false,
+            message: "Please make sure your contact number is a valid mobile number"
+          }
+        } else {
+          return {
+            isValid: true
+          };
+        }
+      } else {
+        return {
+          isValid: false,
+          message: "Mobile number required"
+        };
       }
     default:
       return {

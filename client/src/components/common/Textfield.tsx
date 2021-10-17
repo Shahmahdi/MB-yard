@@ -17,6 +17,7 @@ interface TextfieldProps {
   error?: boolean;
   helperText?: string;
   required?: boolean;
+  type?: string
 }
 
 export const Textfield = (props: TextfieldProps) => {
@@ -24,6 +25,7 @@ export const Textfield = (props: TextfieldProps) => {
   return (
     <TextField
       className={classes.textbox}
+      type={props.type ? props.type : "text"}
       required={props.required}
       id={props.label}
       label={props.label}
