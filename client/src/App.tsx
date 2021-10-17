@@ -1,16 +1,29 @@
-import React from 'react';
-import { Grid } from '@mui/material';
-import './App.css';
-import { Navbar } from './components/Navbar';
+import React from "react";
+import "./App.css";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { LandingPage } from "./pages/landing/index";
+import { Layout } from "./components/Layout";
+
+const NoMatch = () => <div>This page is not available</div>;
 
 const App = () => {
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        <Navbar />
-      </Grid>
-    </Grid>
+    <BrowserRouter>
+      <Switch>
+        <Route
+          exact
+          path='/'
+          render={() => <Layout Component={LandingPage} />}
+        />
+        <Route
+          exact
+          path='/landing'
+          render={() => <Layout Component={LandingPage} />}
+        />
+        <Route component={NoMatch} />
+      </Switch>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
